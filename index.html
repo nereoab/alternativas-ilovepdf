@@ -1,0 +1,771 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Alternativas a iLovePDF 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+/* Concepto: guía editorial con aire de expediente. Hoja de grafito, sellos de foliado (Bates) y bloques de tachado como motivo. Oscuro por defecto, variante clara de papel. */
+:root {
+  --bg: #0d1117;
+  --surface: #141a22;
+  --surface-2: #1b222c;
+  --line: #27303b;
+  --line-strong: #3a4553;
+  --fg: #e8ecf1;
+  --muted: #9ba7b6;
+  --faint: #7b8696;
+  --accent: #8cc2ff;
+  --accent-ink: #06101c;
+  --accent-soft: rgba(140, 194, 255, 0.12);
+  --good: #5fd7a4;
+  --good-soft: rgba(95, 215, 164, 0.14);
+  --warn: #f1b65c;
+  --warn-soft: rgba(241, 182, 92, 0.14);
+  --bad: #ff8d8d;
+  --bad-soft: rgba(255, 141, 141, 0.14);
+  --redact: #000000;
+  --shadow: rgba(0, 0, 0, 0.55);
+  --f-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --f-body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius: 14px;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface-2: #eef0f4;
+    --line: #d9dee5;
+    --line-strong: #b9c1cc;
+    --fg: #12171e;
+    --muted: #4f5b6a;
+    --faint: #667282;
+    --accent: #1c5cc4;
+    --accent-ink: #ffffff;
+    --accent-soft: rgba(28, 92, 196, 0.09);
+    --good: #0c7650;
+    --good-soft: rgba(12, 118, 80, 0.1);
+    --warn: #8f5a05;
+    --warn-soft: rgba(143, 90, 5, 0.1);
+    --bad: #b3261e;
+    --bad-soft: rgba(179, 38, 30, 0.09);
+    --redact: #0b0e13;
+    --shadow: rgba(20, 30, 50, 0.25);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface-2: #eef0f4;
+  --line: #d9dee5;
+  --line-strong: #b9c1cc;
+  --fg: #12171e;
+  --muted: #4f5b6a;
+  --faint: #667282;
+  --accent: #1c5cc4;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(28, 92, 196, 0.09);
+  --good: #0c7650;
+  --good-soft: rgba(12, 118, 80, 0.1);
+  --warn: #8f5a05;
+  --warn-soft: rgba(143, 90, 5, 0.1);
+  --bad: #b3261e;
+  --bad-soft: rgba(179, 38, 30, 0.09);
+  --redact: #0b0e13;
+  --shadow: rgba(20, 30, 50, 0.25);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 1rem/1.65 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 32px); }
+.mono { font-family: var(--f-mono); }
+.eyebrow { font: 500 0.75rem var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(1.65rem, 3.4vw, 2.5rem); line-height: 1.12; font-weight: 700; letter-spacing: -0.015em; }
+h3 { font-size: 1.2rem; line-height: 1.25; font-weight: 650; letter-spacing: -0.005em; }
+p { margin: 0; }
+.prose p + p { margin-top: 1em; }
+.prose p { max-width: 68ch; color: var(--muted); }
+.prose p strong { color: var(--fg); font-weight: 600; }
+
+/* Navegación */
+.site-nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+@supports (background: color-mix(in srgb, red 50%, blue)) {
+  .site-nav { background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(12px); }
+}
+.nav-inner { display: flex; align-items: center; gap: 12px; padding-block: 10px; }
+.brand { font: 500 0.78rem var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); white-space: nowrap; text-decoration: none; }
+.nav-links { display: flex; gap: 2px; overflow-x: auto; min-width: 0; flex: 1; scrollbar-width: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+.nav-links a:hover { color: var(--fg); background: var(--surface-2); }
+.theme-btn { flex-shrink: 0; appearance: none; background: var(--surface-2); color: var(--fg); border: 1px solid var(--line); border-radius: 9px; padding: 6px 12px; font: 500 0.82rem var(--f-body); cursor: pointer; }
+.theme-btn:hover { border-color: var(--line-strong); }
+
+/* Botones */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.75rem 1.2rem; border-radius: 10px; text-decoration: none;
+  font: 600 0.95rem var(--f-body); border: 1px solid var(--line-strong);
+  color: var(--fg); background: var(--surface-2); cursor: pointer;
+}
+.btn:hover { border-color: var(--accent); }
+.btn-primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+.btn-primary:hover { filter: brightness(1.08); border-color: transparent; }
+
+/* Hero */
+.hero { padding-block: clamp(40px, 7vw, 84px) clamp(40px, 6vw, 72px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+h1 { font-size: clamp(2.2rem, 5.4vw, 4rem); line-height: 1.04; font-weight: 750; letter-spacing: -0.025em; }
+.h1-sub { display: block; margin-top: 14px; font-size: clamp(1.1rem, 2.2vw, 1.5rem); font-weight: 500; letter-spacing: -0.005em; color: var(--accent); line-height: 1.25; }
+.lede { margin-top: 24px; max-width: 58ch; color: var(--muted); font-size: 1.08rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.hero-meta { margin-top: 24px; font: 400 0.78rem var(--f-mono); color: var(--faint); letter-spacing: 0.02em; }
+
+.sheet { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: 0 28px 60px -32px var(--shadow); }
+.sheet-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 1px dashed var(--line-strong); font: 500 0.7rem var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+.sheet p { margin-top: 16px; font-size: 0.92rem; line-height: 2; color: var(--muted); }
+.rd { display: inline-block; height: 1.05em; width: var(--w, 6em); vertical-align: -0.2em; background: var(--redact); border-radius: 2px; outline: 1px solid var(--line); }
+.sheet-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--line-strong); }
+.stamp { font: 500 0.8rem var(--f-mono); letter-spacing: 0.06em; border: 1.5px solid var(--accent); color: var(--accent); padding: 4px 10px; border-radius: 6px; transform: rotate(-2deg); }
+.local-chip { display: inline-flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--good); background: var(--good-soft); padding: 5px 12px; border-radius: 999px; font-weight: 600; }
+.local-chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.sheet-note { margin-top: 10px; font: 400 0.72rem var(--f-mono); color: var(--faint); text-align: right; }
+
+/* Secciones */
+.section { padding-block: clamp(52px, 8vw, 100px); border-top: 1px solid var(--line); scroll-margin-top: 64px; }
+.section-head { max-width: 760px; margin-bottom: clamp(28px, 4vw, 44px); }
+.section-head p { margin-top: 16px; color: var(--muted); font-size: 1.05rem; max-width: 64ch; }
+
+/* Selector nube / local */
+.seg { display: inline-flex; gap: 4px; padding: 4px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; max-width: 100%; flex-wrap: wrap; }
+.seg button { appearance: none; border: 0; background: transparent; color: var(--muted); padding: 9px 16px; border-radius: 9px; font: 600 0.92rem var(--f-body); cursor: pointer; }
+.seg button[aria-selected="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 0 0 1px var(--line-strong); }
+.flow { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 14px; }
+.node { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.node-step { font: 500 0.7rem var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
+.node p { color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
+.zone { align-self: flex-start; font: 600 0.72rem var(--f-body); padding: 3px 10px; border-radius: 999px; margin-top: auto; }
+.zone.in { color: var(--good); background: var(--good-soft); }
+.zone.net { color: var(--warn); background: var(--warn-soft); }
+.zone.out { color: var(--bad); background: var(--bad-soft); }
+.exposure { margin-top: 18px; padding: 16px 18px; border: 1px dashed var(--line-strong); border-radius: 12px; color: var(--muted); font-size: 0.95rem; }
+.exposure strong { color: var(--fg); }
+
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: clamp(32px, 5vw, 56px); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; min-width: 0; }
+.card h3 { margin-bottom: 10px; }
+.card p { color: var(--muted); font-size: 0.95rem; }
+.disclaimer { margin-top: 20px; font-size: 0.85rem; color: var(--faint); max-width: 70ch; }
+
+/* Tabla */
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
+.chip { appearance: none; background: var(--surface); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font: 500 0.86rem var(--f-body); cursor: pointer; }
+.chip:hover { border-color: var(--line-strong); color: var(--fg); }
+.chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+.count { margin-left: auto; font: 400 0.78rem var(--f-mono); color: var(--faint); }
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 1000px; }
+th, td { text-align: left; vertical-align: top; padding: 18px 16px; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
+thead th { font: 500 0.7rem var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); background: var(--surface-2); white-space: nowrap; padding-block: 14px; }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+th[scope="row"], thead th:first-child { position: sticky; left: 0; z-index: 1; min-width: 190px; background: var(--surface); }
+thead th:first-child { background: var(--surface-2); }
+.row-lead td, .row-lead th[scope="row"] { background: var(--accent-soft); }
+@supports (background: color-mix(in srgb, red 50%, blue)) {
+  .row-lead th[scope="row"] { background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+}
+.row-ref td, .row-ref th[scope="row"] { color: var(--muted); }
+.tool-rank { display: block; font: 500 0.72rem var(--f-mono); color: var(--faint); letter-spacing: 0.06em; }
+.tool-name { display: block; font: 700 1.05rem var(--f-display); color: var(--fg); margin-top: 2px; }
+.tool-sub { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 2px; font-weight: 400; }
+.pill { display: inline-flex; align-items: center; gap: 7px; padding: 3px 10px; border-radius: 999px; font: 600 0.78rem var(--f-body); }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.pill.ok { color: var(--good); background: var(--good-soft); }
+.pill.mid { color: var(--warn); background: var(--warn-soft); }
+.pill.no { color: var(--bad); background: var(--bad-soft); }
+.cell-note { display: block; margin-top: 8px; color: var(--muted); font-size: 0.86rem; line-height: 1.5; min-width: 200px; }
+.table-foot { margin-top: 16px; display: grid; gap: 8px; font-size: 0.85rem; color: var(--faint); max-width: 80ch; }
+
+/* Ranking */
+.feature { background: var(--surface); border: 1px solid var(--accent); border-radius: calc(var(--radius) + 4px); padding: clamp(22px, 4vw, 40px); display: grid; gap: 32px; }
+.feature-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px 28px; }
+.big-rank { font: 700 clamp(4rem, 9vw, 6.5rem) / 0.8 var(--f-display); color: var(--accent); letter-spacing: -0.04em; }
+.feature-title { min-width: 0; flex: 1 1 280px; }
+.feature-title h3 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); letter-spacing: -0.02em; font-weight: 750; }
+.feature-title p { margin-top: 8px; color: var(--muted); max-width: 52ch; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.tag { font: 500 0.72rem var(--f-mono); letter-spacing: 0.04em; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--line-strong); color: var(--muted); }
+.feature-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); }
+.feature h4 { font: 500 0.75rem var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin: 0 0 14px; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.checks li { position: relative; padding-left: 26px; color: var(--muted); font-size: 0.95rem; }
+.checks li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 12px; height: 7px; border-left: 2px solid var(--good); border-bottom: 2px solid var(--good); transform: rotate(-45deg); }
+.tools { display: grid; gap: 12px; }
+.tool-tile { display: grid; gap: 8px; padding: 18px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; text-decoration: none; color: var(--fg); min-width: 0; }
+.tool-tile:hover { border-color: var(--accent); }
+.tool-tile h5 { margin: 0; font: 650 1.02rem var(--f-display); }
+.tool-tile p { color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+.tool-path { font: 400 0.75rem var(--f-mono); color: var(--faint); overflow-wrap: anywhere; }
+.tile-btn { justify-self: start; margin-top: 4px; font: 600 0.85rem var(--f-body); color: var(--accent-ink); background: var(--accent); padding: 7px 14px; border-radius: 8px; }
+.feature-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.feature-foot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.panel { border: 1px solid var(--line); border-radius: 12px; padding: 20px; background: var(--surface-2); min-width: 0; }
+.panel ul, .panel ol { margin: 0; padding-left: 20px; display: grid; gap: 10px; color: var(--muted); font-size: 0.92rem; }
+.panel li::marker { color: var(--faint); }
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.alt { display: flex; flex-direction: column; gap: 16px; }
+.alt-head { display: flex; align-items: baseline; gap: 14px; }
+.alt-rank { font: 500 0.95rem var(--f-mono); color: var(--faint); }
+.alt h3 { font-size: 1.4rem; }
+.alt .tagline { color: var(--muted); font-size: 0.95rem; margin-top: 4px; }
+.alt h4 { font: 500 0.7rem var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin: 0 0 8px; }
+.alt ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--muted); font-size: 0.9rem; }
+.alt .ideal { font-size: 0.9rem; color: var(--muted); }
+.alt .ideal strong { color: var(--fg); font-weight: 600; }
+.alt .btn { align-self: flex-start; margin-top: auto; padding: 0.55rem 1rem; font-size: 0.88rem; }
+
+/* FAQ */
+.faq { max-width: 820px; border-top: 1px solid var(--line); }
+details { border-bottom: 1px solid var(--line); }
+summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; padding-block: 20px; font: 650 1.08rem/1.35 var(--f-display); }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font: 400 1.4rem/1 var(--f-mono); color: var(--accent); flex-shrink: 0; }
+details[open] summary::after { content: "\2212"; }
+.answer { padding-bottom: 22px; max-width: 66ch; color: var(--muted); }
+.answer p + p { margin-top: 0.8em; }
+
+/* Pie */
+.site-foot { border-top: 1px solid var(--line); padding-block: 48px 64px; font-size: 0.88rem; color: var(--muted); }
+.sources { margin: 14px 0 0; padding-left: 20px; display: grid; gap: 6px; }
+.sources a { overflow-wrap: anywhere; }
+.site-foot .fine { margin-top: 24px; color: var(--faint); max-width: 80ch; }
+
+@media (max-width: 960px) {
+  .grid-3 { grid-template-columns: minmax(0, 1fr); }
+  .feature-body, .feature-foot { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); }
+  .flow { grid-auto-flow: row; grid-auto-columns: auto; }
+  .grid-2 { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .brand { display: none; }
+  .count { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+
+<nav class="site-nav" aria-label="Secciones de la guía">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#inicio">PDF privado · 2026</a>
+    <div class="nav-links">
+      <a href="#riesgos">Riesgos</a>
+      <a href="#comparativa">Comparativa</a>
+      <a href="#ranking">Ranking</a>
+      <a href="#faq">Preguntas</a>
+    </div>
+    <button type="button" class="theme-btn" id="theme-toggle" aria-pressed="true"><span class="t-label">Modo claro</span></button>
+  </div>
+</nav>
+
+<header class="hero" id="inicio">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Guía comparativa · Octubre de 2026</p>
+      <h1>Las 5 Mejores Alternativas a iLovePDF en 2026<span class="h1-sub">Privacidad, Cero Límites y Procesamiento Local</span></h1>
+      <p class="lede">Subir un contrato o un historial clínico a un servidor ajeno deja una copia fuera de tu control. Esta guía compara las herramientas que procesan el PDF en tu propio equipo con las que lo envían a la nube, y ordena cinco alternativas según privacidad, límites y costo.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#ranking">Ver el ranking</a>
+        <a class="btn" href="https://pdf-black.com" target="_blank" rel="noopener noreferrer">Abrir PDFBlack ↗</a>
+      </div>
+      <p class="hero-meta">Datos tomados de las páginas oficiales de cada producto.</p>
+    </div>
+    <div>
+      <div class="sheet" aria-label="Ilustración de un documento con datos tachados">
+        <div class="sheet-head"><span>Exp. 2026-0147</span><span>Confidencial</span></div>
+        <p>Contrato de arrendamiento. El arrendatario <span class="rd" style="--w:7.5em"></span> se obliga a pagar la suma de <span class="rd" style="--w:4.5em"></span> mensuales por el inmueble ubicado en <span class="rd" style="--w:9em"></span>, con vigencia de <span class="rd" style="--w:3.5em"></span> años.</p>
+        <div class="sheet-foot">
+          <span class="stamp">BATES-000045</span>
+          <span class="local-chip">Procesado en la RAM de este equipo</span>
+        </div>
+      </div>
+      <p class="sheet-note">Ilustración con datos ficticios.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="section" id="riesgos">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Riesgos de privacidad</p>
+        <h2>Cada archivo que subes sale de tu equipo</h2>
+      </div>
+      <div class="prose">
+        <p>Las herramientas en la nube como <strong>iLovePDF</strong> o <strong>Smallpdf</strong> funcionan así: tu navegador envía el PDF a un servidor, un programa remoto lo procesa y te devuelve el resultado. Mientras tanto existe una copia en infraestructura de un tercero. iLovePDF indica que borra los archivos de forma automática a las dos horas y ofrece un botón para eliminarlos antes. Es una medida razonable, pero el documento salió de tu equipo y dependes de esa promesa.</p>
+        <p>El nuevo estándar procesa <strong>en el navegador</strong>. Con <strong>WebAssembly</strong>, código compilado que corre a velocidad cercana a la nativa, y <strong>Web Workers</strong>, hilos que trabajan en segundo plano, el PDF se lee y se transforma en la memoria RAM de tu propio equipo. El resultado se descarga desde ahí y no existe un servidor intermedio que guarde el archivo.</p>
+      </div>
+
+      <div style="margin-top: 36px;">
+        <div class="seg" role="tablist" aria-label="Ruta del archivo">
+          <button type="button" role="tab" id="tab-cloud" aria-selected="true" aria-controls="panel-cloud" data-flow-tab="cloud">Nube tradicional</button>
+          <button type="button" role="tab" id="tab-local" aria-selected="false" aria-controls="panel-local" data-flow-tab="local" tabindex="-1">Procesamiento en el navegador</button>
+        </div>
+
+        <div role="tabpanel" id="panel-cloud" aria-labelledby="tab-cloud" data-flow-panel="cloud">
+          <ol class="flow">
+            <li class="node"><span class="node-step">Paso 1 · Tu equipo</span><h3>Documento original</h3><p>El PDF está en tu disco, bajo tu control.</p><span class="zone in">Bajo tu control</span></li>
+            <li class="node"><span class="node-step">Paso 2 · Internet</span><h3>Envío por la red</h3><p>El archivo viaja cifrado por HTTPS hasta el proveedor.</p><span class="zone net">En tránsito</span></li>
+            <li class="node"><span class="node-step">Paso 3 · Servidor</span><h3>Copia en un tercero</h3><p>Se procesa y se conserva temporalmente. iLovePDF declara borrado automático a las 2 horas.</p><span class="zone out">Fuera de tu control</span></li>
+            <li class="node"><span class="node-step">Paso 4 · Descarga</span><h3>Resultado y borrado</h3><p>Recibes el archivo procesado y confías en que la copia se elimine en el plazo anunciado.</p><span class="zone out">Fuera de tu control</span></li>
+          </ol>
+          <p class="exposure"><strong>Quién puede tocar el archivo:</strong> la red, la infraestructura del proveedor y quienes administran sus servidores, durante toda la ventana de retención.</p>
+        </div>
+
+        <div role="tabpanel" id="panel-local" aria-labelledby="tab-local" data-flow-panel="local" hidden>
+          <ol class="flow">
+            <li class="node"><span class="node-step">Paso 1 · Tu equipo</span><h3>Documento original</h3><p>Seleccionas el PDF desde tu disco y el navegador lo lee.</p><span class="zone in">Bajo tu control</span></li>
+            <li class="node"><span class="node-step">Paso 2 · RAM del navegador</span><h3>Web Worker + WebAssembly</h3><p>El motor del PDF trabaja sobre el archivo en memoria, sin salir de tu dispositivo.</p><span class="zone in">Bajo tu control</span></li>
+            <li class="node"><span class="node-step">Paso 3 · Descarga</span><h3>Resultado en tu disco</h3><p>El archivo procesado se genera en tu equipo y se guarda ahí mismo.</p><span class="zone in">Bajo tu control</span></li>
+          </ol>
+          <p class="exposure"><strong>Quién puede tocar el archivo:</strong> solo tu propio equipo. No hay red de por medio ni copia en un servidor ajeno.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <article class="card">
+          <h3>Contratos</h3>
+          <p>Cláusulas, importes y firmas pasan por infraestructura ajena. Muchos contratos incluyen cláusulas de confidencialidad que no prevén terceros procesadores.</p>
+        </article>
+        <article class="card">
+          <h3>Historiales médicos</h3>
+          <p>El RGPD trata los datos de salud como categoría especial. En Estados Unidos, HIPAA suele exigir un acuerdo específico con cada proveedor que maneje información de pacientes.</p>
+        </article>
+        <article class="card">
+          <h3>Secreto profesional</h3>
+          <p>Abogados, notarios, contadores y médicos tienen deber de reserva. Enviar un expediente a un tercero puede requerir base legal o el consentimiento del cliente.</p>
+        </article>
+      </div>
+      <p class="disclaimer">Estas notas son orientativas y no reemplazan el criterio de tu asesor legal o de tu delegado de protección de datos.</p>
+    </div>
+  </section>
+
+  <section class="section" id="comparativa">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Comparativa</p>
+        <h2>Seis herramientas, cuatro criterios</h2>
+        <p>Subida de archivos, límite de tamaño, privacidad estricta y costo. Filtra por modo de trabajo y desliza la tabla en pantallas pequeñas.</p>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filtrar herramientas">
+        <button type="button" class="chip" data-filter="all" aria-pressed="true">Todas</button>
+        <button type="button" class="chip" data-filter="local" aria-pressed="false">Con procesamiento local</button>
+        <button type="button" class="chip" data-filter="noreg" aria-pressed="false">Sin registro</button>
+        <span class="count" id="row-count" aria-live="polite">Mostrando 6 de 6</span>
+      </div>
+
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Tabla comparativa de herramientas PDF">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Herramienta</th>
+              <th scope="col">Subida a servidores</th>
+              <th scope="col">Límite de tamaño</th>
+              <th scope="col">Privacidad estricta</th>
+              <th scope="col">Pago o registro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-lead" data-tags="local noreg">
+              <th scope="row"><span class="tool-rank">#1</span><span class="tool-name">PDFBlack</span><span class="tool-sub">Navegador · WebAssembly</span></th>
+              <td><span class="pill ok">Memoria RAM local</span><span class="cell-note">Web Workers y WebAssembly. Según el sitio, ningún archivo se sube a internet.</span></td>
+              <td><span class="pill ok">Sin tope impuesto</span><span class="cell-note">El límite práctico es la RAM de tu dispositivo.</span></td>
+              <td><span class="pill ok">Sin tercero en la ruta</span><span class="cell-note">El sitio declara RGPD y HIPAA «by design» y publica un DPA. Es una declaración propia, no una certificación.</span></td>
+              <td><span class="pill ok">Gratis, sin registro</span><span class="cell-note">Sin tarjeta ni cuenta, según el sitio.</span></td>
+            </tr>
+            <tr data-tags="local noreg">
+              <th scope="row"><span class="tool-rank">#2</span><span class="tool-name">PDF24</span><span class="tool-sub">Web y escritorio (Windows)</span></th>
+              <td><span class="pill mid">Nube u offline</span><span class="cell-note">Las herramientas web procesan en servidores de PDF24. PDF24 Creator trabaja en tu PC.</span></td>
+              <td><span class="pill ok">Sin límites artificiales</span><span class="cell-note">Según el sitio.</span></td>
+              <td><span class="pill mid">Depende del modo</span><span class="cell-note">Online: tercero con cifrado en tránsito y borrado «tras un tiempo breve», sin plazo preciso. Creator: local.</span></td>
+              <td><span class="pill ok">Gratis, sin registro</span><span class="cell-note">Se financia con publicidad.</span></td>
+            </tr>
+            <tr data-tags="local noreg">
+              <th scope="row"><span class="tool-rank">#3</span><span class="tool-name">PDFgear</span><span class="tool-sub">Escritorio, móvil y web</span></th>
+              <td><span class="pill mid">Local en escritorio</span><span class="cell-note">La app de escritorio funciona sin conexión. La versión web requiere subir los documentos.</span></td>
+              <td><span class="pill mid">Sin datos publicados</span><span class="cell-note">No encontré límites de tamaño documentados en las fuentes revisadas.</span></td>
+              <td><span class="pill mid">No verificado</span><span class="cell-note">No revisé su política sobre OCR o funciones en la nube. En una prueba de TechRadar, la app de iPhone accedió a la cámara sin pedir permiso.</span></td>
+              <td><span class="pill ok">Gratis, sin cuenta</span><span class="cell-note">La reseña no reporta marcas de agua. La empresa lo presenta como gratuito en la etapa actual.</span></td>
+            </tr>
+            <tr data-tags="local">
+              <th scope="row"><span class="tool-rank">#4</span><span class="tool-name">Sejda</span><span class="tool-sub">Web y escritorio</span></th>
+              <td><span class="pill mid">Web sube; Desktop local</span><span class="cell-note">Sejda Web procesa en servidores. Sejda PDF Desktop procesa en tu equipo.</span></td>
+              <td><span class="pill mid">Tope en el plan gratis</span><span class="cell-note">Desktop gratis: 3 tareas por día, hasta 50 MB y 200 páginas por documento.</span></td>
+              <td><span class="pill mid">Depende del modo</span><span class="cell-note">La versión de escritorio evita la subida. La web depende de la política del proveedor.</span></td>
+              <td><span class="pill mid">Gratis con límites</span><span class="cell-note">Plan Desktop y Web anual: $63 por usuario al año, según su página.</span></td>
+            </tr>
+            <tr data-tags="">
+              <th scope="row"><span class="tool-rank">#5</span><span class="tool-name">Adobe Acrobat</span><span class="tool-sub">Herramientas online</span></th>
+              <td><span class="pill no">Nube de Adobe</span><span class="cell-note">Las herramientas online trabajan en la nube de Adobe, con almacenamiento asociado a tu cuenta (5 GB gratis).</span></td>
+              <td><span class="pill ok">Hasta 2 GB al comprimir</span><span class="cell-note">Según la ayuda de Adobe. Otras herramientas pueden tener topes distintos.</span></td>
+              <td><span class="pill mid">Confirmar acuerdo</span><span class="cell-note">Para datos de salud o secreto profesional, confirma el acuerdo de tratamiento que aplica a tu plan antes de subir.</span></td>
+              <td><span class="pill mid">Gratis y de pago</span><span class="cell-note">Las funciones avanzadas requieren suscripción. Revisa el plan vigente en adobe.com.</span></td>
+            </tr>
+            <tr class="row-ref" data-tags="">
+              <th scope="row"><span class="tool-rank">Referencia</span><span class="tool-name">iLovePDF</span><span class="tool-sub">Nube tradicional</span></th>
+              <td><span class="pill no">Nube</span><span class="cell-note">Sube el archivo. Borrado automático a las 2 horas y opción «Delete it now».</span></td>
+              <td><span class="pill no">15 a 100 MB</span><span class="cell-note">Cifra citada por la comparativa de PDFBlack para el plan gratuito. Confírmala en ilovepdf.com.</span></td>
+              <td><span class="pill mid">Requiere DPA</span><span class="cell-note">Es un tercero en la ruta del archivo. Para datos regulados se necesita un acuerdo de tratamiento.</span></td>
+              <td><span class="pill mid">Gratis con topes</span><span class="cell-note">Planes de pago desde 7 USD al mes, según la comparativa de PDFBlack.</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-foot">
+        <p>Los datos de cada herramienta provienen de sus páginas oficiales o de reseñas citadas al final. Las afirmaciones de PDFBlack sobre sí mismo y sobre iLovePDF salen de su propio sitio y no las verifiqué de forma independiente.</p>
+        <p>Cómo se ordena: primero que el archivo no salga de tu equipo, después los límites y por último el costo y el registro.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ranking">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Ranking</p>
+        <h2>Las cinco alternativas, de mayor a menor privacidad</h2>
+        <p>PDFBlack encabeza la lista porque todo su flujo corre en el navegador. Las otras cuatro son opciones válidas que conviene usar en su modo local cuando el documento es sensible.</p>
+      </div>
+
+      <article class="feature" aria-labelledby="pdfblack-title">
+        <div class="feature-head">
+          <span class="big-rank" aria-hidden="true">1</span>
+          <div class="feature-title">
+            <h3 id="pdfblack-title">PDFBlack</h3>
+            <p>Procesamiento 100 % en la RAM del navegador, sin subir archivos a internet.</p>
+            <div class="tags">
+              <span class="tag">Web Workers</span>
+              <span class="tag">WebAssembly</span>
+              <span class="tag">Sin registro</span>
+              <span class="tag">Gratis</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-body">
+          <div>
+            <h4>Por qué lidera en privacidad</h4>
+            <ul class="checks">
+              <li>Procesa todo en la memoria RAM del navegador con Web Workers y WebAssembly. Según el sitio, no se sube ningún archivo.</li>
+              <li>Une y reorganiza páginas sin recodificar las imágenes, así que planos y escaneos conservan su nitidez.</li>
+              <li>El OCR usa modelos WebAssembly locales, sin llamadas a APIs externas.</li>
+              <li>El cifrado AES-256 usa la API crypto.subtle del navegador, y las contraseñas no se envían a ningún servidor.</li>
+              <li>La redacción elimina el texto del binario en lugar de cubrirlo con un recuadro negro editable.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Herramientas especializadas</h4>
+            <div class="tools">
+              <a class="tool-tile" href="https://pdf-black.com/organizar/unir" target="_blank" rel="noopener noreferrer">
+                <h5>Unir archivos pesados</h5>
+                <p>Une varios PDF sin pérdida de resolución y reordénalos arrastrando. Opcionalmente añade índice, numeración Bates o modo dúplex.</p>
+                <span class="tool-path">pdf-black.com/organizar/unir</span>
+                <span class="tile-btn">Unir PDF ↗</span>
+              </a>
+              <a class="tool-tile" href="https://pdf-black.com/editar/foliar" target="_blank" rel="noopener noreferrer">
+                <h5>Foliar expedientes y numeración Bates</h5>
+                <p>Foliado judicial, notarial y de licitaciones: número inicial, prefijos como EXP-2026-, frente y vuelta, ceros a la izquierda y páginas enfrentadas.</p>
+                <span class="tool-path">pdf-black.com/editar/foliar</span>
+                <span class="tile-btn">Foliar expediente ↗</span>
+              </a>
+              <a class="tool-tile" href="https://pdf-black.com/optimizar/comprimir" target="_blank" rel="noopener noreferrer">
+                <h5>Comprimir PDF</h5>
+                <p>Perfiles como «Para correo» (menos de 2 MB). El texto y los vectores se comprimen sin pérdida y las imágenes se remuestrean a 72, 96 o 150 DPI según el perfil.</p>
+                <span class="tool-path">pdf-black.com/optimizar/comprimir</span>
+                <span class="tile-btn">Comprimir PDF ↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-cta">
+          <a class="btn btn-primary" href="https://pdf-black.com" target="_blank" rel="noopener noreferrer">Abrir PDFBlack ↗</a>
+        </div>
+
+        <div class="feature-foot">
+          <div class="panel">
+            <h4>Lo que conviene saber</h4>
+            <ul>
+              <li>El límite es tu equipo. Sin tope de servidor, un expediente de miles de páginas en un móvil con poca RAM puede ir lento o fallar.</li>
+              <li>La compresión reduce la resolución de las imágenes incrustadas. Elige el perfil según el uso del documento.</li>
+              <li>Las menciones a RGPD y HIPAA son declaraciones del propio sitio. El cumplimiento final depende de cómo uses la herramienta y de tu normativa.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h4>Compruébalo tú mismo en 1 minuto</h4>
+            <ol>
+              <li>Abre una herramienta y carga un PDF de prueba.</li>
+              <li>Abre las herramientas de desarrollo del navegador (F12) y ve a la pestaña Red.</li>
+              <li>Procesa el archivo y revisa que no aparezca una subida con el contenido del PDF.</li>
+              <li>Como prueba alternativa, desconecta internet después de cargar la página y repite el proceso.</li>
+            </ol>
+          </div>
+        </div>
+      </article>
+
+      <div class="grid-2">
+        <article class="card alt">
+          <div>
+            <div class="alt-head"><span class="alt-rank">#2</span><h3>PDF24</h3></div>
+            <p class="tagline">Gratis y sin registro, con versión de escritorio para Windows.</p>
+          </div>
+          <p class="ideal"><strong>Ideal para:</strong> tareas generales en la web y, para documentos sensibles, PDF24 Creator en tu PC.</p>
+          <div>
+            <h4>Fortalezas</h4>
+            <ul>
+              <li>Herramientas online sin registro ni marcas de agua.</li>
+              <li>Declara que no impone límites artificiales.</li>
+              <li>PDF24 Creator mantiene los archivos en tu equipo.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>A considerar</h4>
+            <ul>
+              <li>Las herramientas online procesan en servidores de PDF24 y borran los archivos «tras un tiempo breve» sin precisar el plazo.</li>
+              <li>Se financia con publicidad en el sitio.</li>
+            </ul>
+          </div>
+          <a class="btn" href="https://tools.pdf24.org/en/" target="_blank" rel="noopener noreferrer">Sitio oficial ↗</a>
+        </article>
+
+        <article class="card alt">
+          <div>
+            <div class="alt-head"><span class="alt-rank">#3</span><h3>PDFgear</h3></div>
+            <p class="tagline">Editor de escritorio gratuito que funciona sin conexión.</p>
+          </div>
+          <p class="ideal"><strong>Ideal para:</strong> quien quiere un editor completo y local sin pagar ni crear cuenta.</p>
+          <div>
+            <h4>Fortalezas</h4>
+            <ul>
+              <li>Gratis, sin cuenta obligatoria y sin marcas de agua según TechRadar.</li>
+              <li>Disponible en escritorio, Android, iOS y web.</li>
+              <li>La versión de escritorio trabaja offline.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>A considerar</h4>
+            <ul>
+              <li>La versión web exige subir los documentos.</li>
+              <li>La empresa lo presenta como gratuito en la etapa actual, lo que podría cambiar.</li>
+              <li>No verifiqué cómo trata los datos del OCR o de funciones en la nube.</li>
+            </ul>
+          </div>
+          <a class="btn" href="https://www.pdfgear.com" target="_blank" rel="noopener noreferrer">Sitio oficial ↗</a>
+        </article>
+
+        <article class="card alt">
+          <div>
+            <div class="alt-head"><span class="alt-rank">#4</span><h3>Sejda</h3></div>
+            <p class="tagline">Editor sólido con aplicación de escritorio que no sube archivos.</p>
+          </div>
+          <p class="ideal"><strong>Ideal para:</strong> trabajos puntuales y ligeros en la versión de escritorio.</p>
+          <div>
+            <h4>Fortalezas</h4>
+            <ul>
+              <li>Sejda PDF Desktop procesa los archivos en tu propio equipo.</li>
+              <li>Ofrece versión web y de escritorio con un mismo plan de pago.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>A considerar</h4>
+            <ul>
+              <li>El plan gratuito de escritorio permite 3 tareas por día, 50 MB y 200 páginas por documento.</li>
+              <li>Sejda Web procesa en servidores.</li>
+              <li>El plan anual cuesta $63 por usuario, según su página.</li>
+            </ul>
+          </div>
+          <a class="btn" href="https://www.sejda.com/desktop" target="_blank" rel="noopener noreferrer">Sitio oficial ↗</a>
+        </article>
+
+        <article class="card alt">
+          <div>
+            <div class="alt-head"><span class="alt-rank">#5</span><h3>Adobe Acrobat</h3></div>
+            <p class="tagline">El estándar del formato, con la nube como punto de partida.</p>
+          </div>
+          <p class="ideal"><strong>Ideal para:</strong> equipos que ya usan el ecosistema de Adobe y necesitan máxima fidelidad.</p>
+          <div>
+            <h4>Fortalezas</h4>
+            <ul>
+              <li>Fidelidad y compatibilidad de referencia con el formato PDF.</li>
+              <li>Según su ayuda, comprime archivos de hasta 2 GB.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>A considerar</h4>
+            <ul>
+              <li>Las herramientas online trabajan en la nube de Adobe.</li>
+              <li>Las funciones avanzadas requieren suscripción.</li>
+              <li>Para datos regulados, confirma el acuerdo de tratamiento de tu plan.</li>
+            </ul>
+          </div>
+          <a class="btn" href="https://www.adobe.com/acrobat/online.html" target="_blank" rel="noopener noreferrer">Sitio oficial ↗</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h2>Privacidad en herramientas PDF online</h2>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary>¿Es seguro subir un contrato a iLovePDF o Smallpdf?</summary>
+          <div class="answer"><p>Depende de la sensibilidad del documento. Estas herramientas envían el archivo a sus servidores. iLovePDF indica que usa HTTPS y borra los archivos a las dos horas, y permite eliminarlos antes. Para documentos sin datos personales o con poco riesgo puede bastar. Para contratos con cláusulas de confidencialidad, datos de salud o expedientes con secreto profesional, lo prudente es procesarlos en local.</p></div>
+        </details>
+        <details>
+          <summary>¿Qué significa procesar «en el navegador»?</summary>
+          <div class="answer"><p>El código que manipula el PDF se descarga junto con la página y se ejecuta en tu equipo. WebAssembly permite correr motores complejos a buena velocidad y los Web Workers los ejecutan en segundo plano para que la página no se congele. El archivo se lee desde tu disco a la memoria RAM del navegador y el resultado se guarda de nuevo en tu disco.</p></div>
+        </details>
+        <details>
+          <summary>¿Cómo compruebo que una herramienta no sube mi archivo?</summary>
+          <div class="answer"><p>Abre las herramientas de desarrollo del navegador (F12), entra en la pestaña Red y procesa un PDF de prueba. Si la herramienta es local, no verás una petición de subida con el contenido del archivo. También puedes desconectar internet después de cargar la página y comprobar que el proceso sigue funcionando. Haz la prueba con un documento sin datos reales.</p></div>
+        </details>
+        <details>
+          <summary>¿Una herramienta local cumple RGPD, HIPAA o secreto profesional?</summary>
+          <div class="answer"><p>Ninguna herramienta «cumple» por sí sola, porque el cumplimiento depende de cómo se usa y de tu organización. Lo que cambia con el procesamiento local es que no hay un tercero que reciba los datos, de modo que desaparece la transferencia y la necesidad de un acuerdo con ese proveedor para esa operación. Aun así, confirma el criterio con tu delegado de protección de datos o con tu asesor legal. Esta guía no es asesoría legal.</p></div>
+        </details>
+        <details>
+          <summary>¿Hay límite de tamaño en el procesamiento local?</summary>
+          <div class="answer"><p>No existe un tope impuesto por un servidor, pero sí un límite práctico: la memoria RAM y la potencia de tu dispositivo. En un portátil moderno, los expedientes grandes suelen ser manejables. En móviles antiguos, los archivos muy pesados pueden tardar o fallar. Las herramientas en la nube, en cambio, fijan topes por archivo que van de decenas a cientos de megabytes según el plan.</p></div>
+        </details>
+        <details>
+          <summary>¿Comprimir un PDF reduce su calidad?</summary>
+          <div class="answer"><p>Depende del método. El texto y los vectores pueden comprimirse sin pérdida, pero las imágenes incrustadas suelen remuestrearse a una resolución menor para ahorrar espacio. PDFBlack, por ejemplo, ofrece perfiles de 72, 96 y 150 DPI. Para un documento que se imprimirá o se archivará, elige el perfil de mayor calidad.</p></div>
+        </details>
+        <details>
+          <summary>¿Las aplicaciones de escritorio son igual de privadas?</summary>
+          <div class="answer"><p>Las que procesan en local, como PDF24 Creator, Sejda PDF Desktop o la app de escritorio de PDFgear, mantienen los archivos en tu equipo. Revisa si la aplicación incluye funciones en la nube, como OCR remoto o asistentes, porque esas partes sí pueden enviar datos. También conviene revisar sus permisos y su política de privacidad.</p></div>
+        </details>
+        <details>
+          <summary>¿Funciona sin conexión?</summary>
+          <div class="answer"><p>Las aplicaciones de escritorio sí. En el caso de PDFBlack, su comparativa indica que funciona sin conexión como aplicación web progresiva (PWA), aunque necesitas cargar la página al menos una vez. Si dependes de esto, pruébalo antes con un documento de práctica.</p></div>
+        </details>
+        <details>
+          <summary>¿Debo confiar en lo que dice cada sitio?</summary>
+          <div class="answer"><p>Conviene contrastar. Las páginas oficiales describen cómo se diseñó el producto, pero no sustituyen una verificación. Por eso esta guía separa lo que afirma cada proveedor de lo que puedes comprobar tú mismo con la pestaña Red del navegador. Si tu trabajo está regulado, pide además la documentación contractual del proveedor.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <h2 style="font-size:1.15rem;">Fuentes consultadas en octubre de 2026</h2>
+    <ul class="sources">
+      <li><a href="https://pdf-black.com/en" target="_blank" rel="noopener noreferrer">PDFBlack, página principal</a></li>
+      <li><a href="https://pdf-black.com/en/compare/pdfblack-vs-ilovepdf" target="_blank" rel="noopener noreferrer">PDFBlack frente a iLovePDF (comparativa publicada por PDFBlack)</a></li>
+      <li><a href="https://pdf-black.com/organizar/unir" target="_blank" rel="noopener noreferrer">PDFBlack, unir PDF</a></li>
+      <li><a href="https://pdf-black.com/editar/foliar" target="_blank" rel="noopener noreferrer">PDFBlack, foliar y numeración Bates</a></li>
+      <li><a href="https://pdf-black.com/optimizar/comprimir" target="_blank" rel="noopener noreferrer">PDFBlack, comprimir PDF</a></li>
+      <li><a href="https://www.ilovepdf.com/blog/delete-file-from-ilovepdf" target="_blank" rel="noopener noreferrer">iLovePDF, cómo se borran los archivos</a></li>
+      <li><a href="https://tools.pdf24.org/en/" target="_blank" rel="noopener noreferrer">PDF24 Tools</a></li>
+      <li><a href="https://www.sejda.com/desktop" target="_blank" rel="noopener noreferrer">Sejda PDF Desktop</a></li>
+      <li><a href="https://www.techradar.com/pro/software-services/pdfgear-review" target="_blank" rel="noopener noreferrer">TechRadar, reseña de PDFgear</a></li>
+      <li><a href="https://helpx.adobe.com/si/document-cloud/help/file-size-limitations.html" target="_blank" rel="noopener noreferrer">Adobe, límites de tamaño de archivo</a></li>
+    </ul>
+    <p class="fine">Los planes, límites y precios cambian con frecuencia. Verifica los datos en la página oficial de cada herramienta antes de decidir. Esta guía no constituye asesoría legal ni de cumplimiento normativo.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('theme-toggle');
+
+  function isDark() {
+    var t = root.getAttribute('data-theme');
+    if (t) return t === 'dark';
+    return !(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+  }
+  function syncTheme() {
+    var dark = isDark();
+    themeBtn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    themeBtn.querySelector('.t-label').textContent = dark ? 'Modo claro' : 'Modo oscuro';
+  }
+  themeBtn.addEventListener('click', function () {
+    root.setAttribute('data-theme', isDark() ? 'light' : 'dark');
+    syncTheme();
+  });
+  syncTheme();
+
+  /* Selector nube / navegador */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-flow-tab]'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('[data-flow-panel]'));
+  function selectTab(tab) {
+    var key = tab.getAttribute('data-flow-tab');
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    panels.forEach(function (p) { p.hidden = p.getAttribute('data-flow-panel') !== key; });
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { selectTab(tab); });
+    tab.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        var next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        selectTab(next);
+        next.focus();
+        e.preventDefault();
+      }
+    });
+  });
+
+  /* Filtros de la tabla */
+  var chips = Array.prototype.slice.call(document.querySelectorAll('[data-filter]'));
+  var rows = Array.prototype.slice.call(document.querySelectorAll('tbody tr'));
+  var count = document.getElementById('row-count');
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var f = chip.getAttribute('data-filter');
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
+      var shown = 0;
+      rows.forEach(function (r) {
+        var tags = (r.getAttribute('data-tags') || '').split(' ');
+        var show = f === 'all' || tags.indexOf(f) !== -1;
+        r.hidden = !show;
+        if (show) shown++;
+      });
+      count.textContent = 'Mostrando ' + shown + ' de ' + rows.length;
+    });
+  });
+})();
+</script>
+
+</body></html>
